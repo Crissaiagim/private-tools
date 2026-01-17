@@ -3,26 +3,132 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-
-  <title>Private Tools</title>
-
+  <title>Tempo ou Dinheiro?</title>
+  
   <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0f172a" />
-
+  
   <!-- iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Private Tools" />
-
+  <meta name="apple-mobile-web-app-title" content="Tempo ou Dinheiro?" />
+  
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <main class="app">
-    <h1>Private Tools</h1>
-    <p>Base limpa</p>
+    <header>
+      <h1>⏳ Tempo ou Dinheiro?</h1>
+      <p class="subtitle">Calcule quanto custa em tempo de trabalho e evite compras por impulso</p>
+    </header>
+    
+    <div class="tabs">
+      <button class="tab active" data-tab="calculator">Calculadora</button>
+      <button class="tab" data-tab="timers">Meus Timers</button>
+      <button class="tab" data-tab="history">Histórico</button>
+    </div>
+    
+    <!-- Calculadora -->
+    <div class="tab-content active" id="calculator">
+      <div class="section">
+        <h2>💰 Seu Valor por Hora</h2>
+        <div class="form-group">
+          <label for="salary">Salário Líquido Mensal (R$)</label>
+          <input type="number" id="salary" placeholder="Ex: 3000" min="0" step="100">
+        </div>
+        <div class="form-group">
+          <label for="workHours">Horas de Trabalho por Mês</label>
+          <input type="number" id="workHours" placeholder="Ex: 160" min="1" value="160">
+        </div>
+        <button class="button" id="saveConfig">Salvar Configuração</button>
+        
+        <div id="hourlyRateDisplay" class="result-card hidden">
+          <h3>Seu valor por hora:</h3>
+          <div class="result-value" id="hourlyRate">R$ 0,00</div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2>🛒 Calcular Custo do Item</h2>
+        <div class="form-group">
+          <label for="itemName">Nome do Item</label>
+          <input type="text" id="itemName" placeholder="Ex: Smartphone novo">
+        </div>
+        <div class="form-group">
+          <label for="itemPrice">Preço do Item (R$)</label>
+          <input type="number" id="itemPrice" placeholder="Ex: 2500" min="0" step="0.01">
+        </div>
+        <button class="button" id="calculateCost">Calcular Custo em Tempo</button>
+        
+        <div id="resultDisplay" class="result-card hidden">
+          <h3 id="resultTitle">Item</h3>
+          <div class="result-value" id="resultHours">0 horas</div>
+          <div class="result-detail" id="resultDays">0 dias de trabalho</div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2>⏰ Criar Timer de Reflexão</h2>
+        <div class="form-group">
+          <label for="timerHours">Tempo de Espera (horas)</label>
+          <input type="number" id="timerHours" placeholder="Ex: 24" min="1" value="24">
+        </div>
+        <button class="button secondary" id="createTimer">Criar Timer</button>
+        <p class="result-detail">Você receberá uma notificação quando o tempo acabar, perguntando se ainda precisa do item.</p>
+      </div>
+    </div>
+    
+    <!-- Timers Ativos -->
+    <div class="tab-content" id="timers">
+      <div class="section">
+        <h2>⏱️ Timers Ativos</h2>
+        <div id="activeTimersList">
+          <p class="result-detail">Nenhum timer ativo no momento.</p>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2>📊 Estatísticas</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="statsSavedHours">0</div>
+            <div class="stat-label">Horas economizadas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="statsCanceled">0</div>
+            <div class="stat-label">Itens cancelados</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="statsPurchased">0</div>
+            <div class="stat-label">Itens comprados</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Histórico -->
+    <div class="tab-content" id="history">
+      <div class="section">
+        <h2>📝 Histórico de Itens</h2>
+        <div id="historyList">
+          <p class="result-detail">Nenhum item no histórico.</p>
+        </div>
+      </div>
+    </div>
   </main>
-
+  
+  <!-- Notificação Modal -->
+  <div id="notificationModal" class="notification hidden">
+    <h4 id="notificationTitle">Timer Finalizado!</h4>
+    <p id="notificationText">Você ainda precisa do item?</p>
+    <div class="notification-buttons">
+      <button class="button" id="buyItem">Sim, Comprar</button>
+      <button class="button secondary" id="delayItem">Adiar +24h</button>
+      <button class="button danger" id="cancelItem">Não, Cancelar</button>
+    </div>
+  </div>
+  
   <script src="js/app.js"></script>
 </body>
 </html>
